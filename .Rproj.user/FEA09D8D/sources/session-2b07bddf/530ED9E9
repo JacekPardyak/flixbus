@@ -1,0 +1,26 @@
+{
+    "id": "530ED9E9",
+    "path": "~/kedro/requirements.txt",
+    "project_path": "requirements.txt",
+    "type": "text",
+    "hash": "309668677",
+    "contents": "",
+    "dirty": false,
+    "created": 1724699023508.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "2,8",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1724699056,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1724699056044,
+    "read_only": false,
+    "read_only_alternatives": []
+}
