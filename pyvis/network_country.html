@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"group": "Country", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646", "label": "Canada", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18645", "label": "Banff", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18647", "label": "Barrie, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18648", "label": "Belleville", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18649", "label": "Brantford", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18650", "label": "Calgary, AB", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18651", "label": "Camrose", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18652", "label": "Canmore", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18653", "label": "Carleton Place", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18654", "label": "Chatham", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18655", "label": "Claresholm", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18656", "label": "Cobourg", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18657", "label": "Collingwood", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18658", "label": "Edmonton, AB", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18659", "label": "Fort Macleod", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18660", "label": "Hamilton, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18661", "label": "Ingersoll", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18662", "label": "Kingston, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18663", "label": "Kitchener, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18664", "label": "Lake Louise, AB", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18665", "label": "Lethbridge, AB", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18666", "label": "London, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18667", "label": "Longueuil, QC", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18668", "label": "Madoc", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18669", "label": "Meaford", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18670", "label": "Mississauga, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18671", "label": "Montreal, QC", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18672", "label": "Niagara Falls, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18673", "label": "Okotoks", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18674", "label": "Oshawa, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18675", "label": "Ottawa, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18676", "label": "Owen Sound", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18677", "label": "Parry Sound", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18678", "label": "Perth,ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18679", "label": "Peterborough, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18680", "label": "Pickering,ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18681", "label": "Port Hope", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18682", "label": "Port Severn", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18683", "label": "Red Deer, AB", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18684", "label": "Sarnia", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18685", "label": "St Thomas", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18686", "label": "St. Catharines, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18687", "label": "Strathroy", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18688", "label": "Sudbury, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18689", "label": "Thornbury", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18690", "label": "Toronto, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18691", "label": "Vancouver, BC", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18692", "label": "Victoria, BC", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18693", "label": "Wasaga Beach", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18694", "label": "Waubaushene", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18695", "label": "Windsor, ON", "shape": "dot"}, {"group": "City", "id": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18696", "label": "Woodstock,ON", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18645", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18647", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18648", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18649", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18650", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18651", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18652", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18653", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18654", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18655", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18656", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18657", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18658", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18659", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18660", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18661", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18662", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18663", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18664", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18665", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18666", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18667", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18668", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18669", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18670", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18671", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18672", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18673", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18674", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18675", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18676", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18677", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18678", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18679", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18680", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18681", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18682", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18683", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18684", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18685", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18686", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18687", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18688", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18689", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18690", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18691", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18692", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18693", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18694", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18695", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}, {"from": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18696", "title": "LOCATED_IN", "to": "4:a28d29af-2a30-4c71-b11e-b0c84b8165e9:18646"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
